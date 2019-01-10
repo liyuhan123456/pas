@@ -1,0 +1,7 @@
+.container{
+  line-height: 24px;
+  padding: 16px 30px 16px 20px;
+  font-size: 12px;
+  position: relative;
+  z-index: 2;
+}
