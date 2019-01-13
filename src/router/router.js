@@ -55,6 +55,12 @@ const CategoryDetail = (props) => (
     </Bundle>
 );
 
+const ProductDetail = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "ProductDetail" */'../pages/ProductDetail/index')}>
+        {(ProductDetail) => <ProductDetail {...props} />}
+    </Bundle>
+);
+
 
 
 
@@ -70,6 +76,7 @@ const routerMap=[
 const IndexRouterMap = [
     { path: '/index/404', component: NoMatch, exact: true },
     { path: '/index/home', component: Home, exact: true },
+    { path: '/index/home/product', component: ProductDetail, exact: true },
     { path: '/index/category', component: Category, exact: true },
     { path: '/index/category/detail', component: CategoryDetail, exact: true },
     { path: '/index/manage', component: UserManage, exact: true },

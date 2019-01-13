@@ -5,7 +5,8 @@ import {log} from '../../utils/utils';
 import {} from '../../service/index';
 import moment from 'moment';
 import {withRouter} from "react-router-dom";
-import {fetchProductList,fetchCategoryList} from "../../service/index";
+import {fetchProductList,fetchCategoryList,deleteProduct} from "../../service/index";
+import {deleteCategory} from "../../service/index";
 const { Meta } = Card;
 
 @withRouter
@@ -20,7 +21,7 @@ class AdminHome extends Component {
                     id: 0,
                 }
             ],
-            type: 0,
+            type: (this.props.history.location.state && this.props.history.location.state.category_id ) || 0,
             keyword: '',
             lastKeyword: '',
             searchMode: false,
@@ -35,6 +36,19 @@ class AdminHome extends Component {
     componentDidMount(){
         this.handleFetchCategoryList();
         this.handleFetchProductList();
+    }
+    handleDeleteProduct(id){
+        deleteProduct({id}).then(res=>{
+            if(res.error === 0){
+                message.success("删除成功",1);
+                this.handleFetchProductList();
+            }else{
+                message.error("删除失败,请稍后再试或检查服务器状态!",1);
+            }
+        }).catch(err=>{
+            log(err);
+            message.error("删除失败,请稍后再试或检查服务器状态!",1);
+        })
     }
     handleFetchCategoryList(){
         this.setState({
@@ -87,7 +101,7 @@ class AdminHome extends Component {
             searchMode: true,
             lastKeyword: this.state.keyword,
         },()=>{
-            this.handleFetchProductList()
+            this.handleFetchProductList();
         })
     }
     render() {
@@ -110,6 +124,7 @@ class AdminHome extends Component {
                     <Button type={"primary"} style={{ marginRight: 20 }} onClick={this.handleSearch}>查找</Button>
                     { this.state.searchMode && <span style={{ marginRight: 20 }} className="link_primary" onClick={()=>{this.setState({ pageNum: 1,searchMode: false, keyword: '', lastKeyword: '', type: 0 },()=>{this.handleFetchProductList()})}}>清除搜索条件</span> }
                     当前条件下共有 {this.state.rowTotal} 件商品
+                    <Button style={{ float: 'right' }} type={"primary"} onClick={()=>{ this.props.history.push('/index/home/product',{ category_id: this.state.type === 0 ? '' : this.state.type })}} >新增商品</Button>
                 </div>
                 <div style={{ marginTop: 30 }}>
                     {
@@ -123,11 +138,11 @@ class AdminHome extends Component {
                                                 <Card
                                                     hoverable
                                                     style={{ width: '100%' }}
-                                                    cover={<img alt="image" src={item.image ? item.image : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"} />}
-                                                    actions={[<Icon style={{ fontSize: 26 }} type="edit" />,<Popconfirm title="确定要删除这个类别吗？" onConfirm={()=>{}} okText="是" cancelText="否"> <Icon style={{ fontSize: 26 }} type="delete" /></Popconfirm>]}
+                                                    cover={<img alt="image" style={{ height: 210 }} src={item.image ? item.image : "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"} />}
+                                                    actions={[<Icon  onClick={()=>{ this.props.history.push('/index/home/product',{ productInfo: item,category_id: this.state.type })}} style={{ fontSize: 26 }} type="edit" />,<Popconfirm title="确定要删除这个类别吗？" onConfirm={()=>{this.handleDeleteProduct(item.id)}} okText="是" cancelText="否"> <Icon style={{ fontSize: 26 }} type="delete" /></Popconfirm>]}
                                                 >
                                                     <Meta
-                                                        title={item.name}
+                                                        title={item.name ? item.name : '该商品暂无名称，请编辑'}
                                                         description={<div><p style={{ marginBottom: 4 }}>介绍：{item.description}</p><p style={{ marginBottom: 4 }}>价格：{item.price}元</p></div>}
                                                     />
                                                 </Card>
