@@ -61,6 +61,18 @@ const ProductDetail = (props) => (
     </Bundle>
 );
 
+const Level = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "Level" */'../pages/Level/index')}>
+        {(Level) => <Level {...props} />}
+    </Bundle>
+);
+
+const System = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "System" */'../pages/System/index')}>
+        {(System) => <System {...props} />}
+    </Bundle>
+);
+
 
 
 
@@ -79,6 +91,8 @@ const IndexRouterMap = [
     { path: '/index/home/product', component: ProductDetail, exact: true },
     { path: '/index/category', component: Category, exact: true },
     { path: '/index/category/detail', component: CategoryDetail, exact: true },
+    { path: '/index/level', component: Level, exact: true },
+    { path: '/index/system', component: System, exact: true },
     { path: '/index/manage', component: UserManage, exact: true },
     { path: '/index/manage/userForm', component: UserForm, exact: true },
     { path: '/index/*', component: NoMatch, exact: true },

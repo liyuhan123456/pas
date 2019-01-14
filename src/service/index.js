@@ -63,7 +63,7 @@ export function fetchPriceList(data){
 export function savePrice(data){
     return get('/product/price/save',data);
 }
-//新增/保存价格
+//获取级别列表
 export function fetchLevelList(data){
     return get('/seller/level/list',data);
 }
@@ -79,7 +79,27 @@ export function fetchInventoryList(data){
 export function saveInventoryRecord(data){
     return get('/product/inventory/save',data);
 }
-//新增/保存库存记录
+//删除库存记录
 export function deleteInventoryRecord(data){
     return get('/product/inventory/delete',data);
+}
+//新增/保存级别
+export function saveLevel(data){
+    return get('/seller/level/save',data);
+}
+//删除级别
+export function deleteLevel(data){
+    return get('/seller/level/delete',data);
+}
+//系统配置列表
+export function fetchConfigList(data){
+    return get('/config/list',data);
+}
+//新增/保存配置
+export function saveConfig(data){
+    return get('/config/save',data);
+}
+//删除配置
+export function deleteConfig(data){
+    return get('/config/delete',data);
 }

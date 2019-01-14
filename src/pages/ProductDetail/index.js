@@ -27,7 +27,7 @@ import {
     deletePrice,
     fetchInventoryList,
     saveInventoryRecord,
-    deleteInventoryRecord, deleteCategory
+    deleteInventoryRecord,
 } from '../../service/index';
 
 const FormItem = Form.Item;
@@ -423,6 +423,7 @@ class ProductDetail extends Component {
         if(this.state.editInventoryVisible){
             saveInventoryRecord(this.state.editInventoryForm).then(res=>{
                 if(res.error === 0){
+                    message.success("保存成功");
                     this.setState({
                         editInventoryVisible: false
                     });
@@ -438,7 +439,11 @@ class ProductDetail extends Component {
        if(this.state.addInventoryVisible){
            saveInventoryRecord(this.state.addInventoryForm).then(res=>{
                if(res.error === 0){
+                   message.success("保存成功");
+                   let form = {...this.state.productInfo};
+                   form.quantity = res.data.quantity;
                    this.setState({
+                       productInfo: form,
                        addInventoryVisible: false,
                        addInventoryForm: {
                            changes: '',
