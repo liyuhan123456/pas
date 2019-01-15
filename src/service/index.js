@@ -103,3 +103,19 @@ export function saveConfig(data){
 export function deleteConfig(data){
     return get('/config/delete',data);
 }
+//系统配置列表
+export function fetchAgentList(data){
+    return get('/seller/info/list',data);
+}
+//新增/保存配置
+export function saveAgent(data){
+    return get('/seller/info/save',data);
+}
+//删除配置
+export function deleteAgent(data){
+    return get('/seller/info/delete',data);
+}
+//查询代理商
+export function queryAgent(data){
+    return get('/seller/info/query',data);
+}

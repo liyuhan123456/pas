@@ -61,7 +61,7 @@ class System extends Component {
                     return (
                         <div style={{display: 'flex', justifyContent: 'space-around'}}>
                             <Button type={"primary"} onClick={() => {
-                                this.handleChangeLevel(record)
+                                this.handleChangeConfig(record)
                             }}>修改</Button>
                             <Popconfirm title="确定要删除这个级别吗？" onConfirm={() => {
                                 this.handleDeleteConfig(record.id)
@@ -106,7 +106,7 @@ class System extends Component {
                 });
             }).catch(err=>{
                 log(err);
-                message.error("获取级别列表失败，请检查网络和服务器状态",1.5)
+                message.error("获取代理级别失败，请检查网络和服务器状态",1.5)
             }).finally(()=>{
                 this.setState({
                     isLoading: false
@@ -114,7 +114,7 @@ class System extends Component {
             })
         });
     }
-    handleChangeLevel(record){
+    handleChangeConfig(record){
         this.setState({
             systemVisible: true,
             systemForm: {
@@ -157,7 +157,7 @@ class System extends Component {
     render(){
         return <div className="block">
             <Breadcrumb>
-                <Breadcrumb.Item>代理级别管理</Breadcrumb.Item>
+                <Breadcrumb.Item>系统配置管理</Breadcrumb.Item>
             </Breadcrumb>
             <Modal width={640} visible={this.state.systemVisible} onOk={this.handleSaveConfig} onCancel={() => {this.setState({systemVisible: false})}} >
                 <Form style={{marginBottom: 20}}>
@@ -202,7 +202,7 @@ class System extends Component {
                             description: ''
                         },
                     })
-                }} style={{ marginLeft: 30 }} type={"primary"}>新增级别</Button>
+                }} style={{ marginLeft: 30 }} type={"primary"}>新增配置项</Button>
                 <Table rowKey={'id'} style={{margin: 30}} loading={this.state.isLoading}
                        dataSource={this.state.list} columns={this.levelColumns}
                        pagination={{
@@ -210,7 +210,7 @@ class System extends Component {
                                this.setState({
                                    pageNum: page
                                },()=>{
-                                   this.handlefetchConfigList();
+                                   this.handleFetchConfigList();
                                })
                            }
                        }}/>

@@ -73,6 +73,12 @@ const System = (props) => (
     </Bundle>
 );
 
+const Agent = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "Agent" */'../pages/Agent/index')}>
+        {(Agent) => <Agent {...props} />}
+    </Bundle>
+);
+
 
 
 
@@ -93,6 +99,7 @@ const IndexRouterMap = [
     { path: '/index/category/detail', component: CategoryDetail, exact: true },
     { path: '/index/level', component: Level, exact: true },
     { path: '/index/system', component: System, exact: true },
+    { path: '/index/agent', component: Agent, exact: true },
     { path: '/index/manage', component: UserManage, exact: true },
     { path: '/index/manage/userForm', component: UserForm, exact: true },
     { path: '/index/*', component: NoMatch, exact: true },
