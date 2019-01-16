@@ -262,7 +262,6 @@ class Agent extends Component {
                 this.setState({
                     agentList: dataList,
                     agentInfoList: res.data,
-                    selectMode: true
                 })
             }).catch(err => {
                 log(err);
@@ -282,7 +281,6 @@ class Agent extends Component {
             });
         }, 0)
     }
-
     render() {
         return <div className="block">
             <Breadcrumb>

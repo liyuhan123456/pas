@@ -79,6 +79,18 @@ const Agent = (props) => (
     </Bundle>
 );
 
+const Order = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "Order" */'../pages/Order/index')}>
+        {(Order) => <Order {...props} />}
+    </Bundle>
+);
+
+const OrderDetail = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "OrderDetail" */'../pages/OrderDetail/index')}>
+        {(OrderDetail) => <OrderDetail {...props} />}
+    </Bundle>
+);
+
 
 
 
@@ -100,6 +112,9 @@ const IndexRouterMap = [
     { path: '/index/level', component: Level, exact: true },
     { path: '/index/system', component: System, exact: true },
     { path: '/index/agent', component: Agent, exact: true },
+    { path: '/index/order', component: Order, exact: true },
+    { path: '/index/order/detail/', component: OrderDetail, exact: true },
+    { path: '/index/order/detail/:id', component: OrderDetail, exact: true },
     { path: '/index/manage', component: UserManage, exact: true },
     { path: '/index/manage/userForm', component: UserForm, exact: true },
     { path: '/index/*', component: NoMatch, exact: true },

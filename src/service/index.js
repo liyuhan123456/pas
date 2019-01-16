@@ -119,3 +119,15 @@ export function deleteAgent(data){
 export function queryAgent(data){
     return get('/seller/info/query',data);
 }
+//查询订单列表
+export function fetchOrderList(data){
+    return get('/order/info/list',data);
+}
+//删除订单
+export function deleteOrder(data){
+    return get('/order/info/delete',data);
+}
+//订单详情
+export function fetchOrderDetail(data){
+    return get('/order/info/detail',data);
+}
