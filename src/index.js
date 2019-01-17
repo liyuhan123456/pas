@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'core-js/es6/map';
 import 'core-js/es6/set';
-import "babel-polyfill"
 // import Router from './router/router';
 // import './css/your-theme-file.less'
 import './index.module.css'

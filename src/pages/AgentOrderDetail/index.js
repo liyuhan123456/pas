@@ -13,14 +13,16 @@ import {
     fetchOrderDetail,
     fetchProductList,
     saveOrder,
-    queryAgent
+    queryAgent,
+    fetchAgentDetail
 } from '../../service/index';
 const noImg = require('../../assets/noImg.png');
 const FormItem = Form.Item;
 const Option = AutoComplete.Option;
-class OrderDetail extends Component {
+class AgentOrderDetail extends Component {
     constructor(props) {
         super(props);
+        log(this.props);
         this.state = {
             pageNum: 1,
             pageSize: 10,
@@ -28,7 +30,7 @@ class OrderDetail extends Component {
             list: [],
             isLoading: false,
             orderForm: {
-                seller_id: '',
+                seller_id: this.props.location.state.agentId,
                 seller_name: '',
                 species: 0,
                 quantity: 0,
@@ -39,7 +41,6 @@ class OrderDetail extends Component {
             },
             agentList: [],
             lastSelectName: '',
-            // lastSelectProduct: '',
             agentInfoList: [],
             productList: [],
             productInfoList: []
@@ -57,6 +58,16 @@ class OrderDetail extends Component {
     componentDidMount() {
         if (this.props.match.params.id) {
             this.handleFetchOrderDetail();
+        }else{
+            fetchAgentDetail({
+                id: this.props.location.state.agentId
+            }).then(res=>{
+                let orderForm = {...this.state.orderForm};
+                orderForm.seller_name = res.data.name;
+                this.setState({
+                    orderForm
+                })
+            })
         }
     }
 
@@ -67,6 +78,7 @@ class OrderDetail extends Component {
             fetchOrderDetail({
                 id: this.props.match.params.id
             }).then(res => {
+                log(res);
                 if (res.error === 0) {
                     this.setState({
                         orderForm: res.data
@@ -90,8 +102,9 @@ class OrderDetail extends Component {
         form.list = form.list.filter(item=>item.product_id !== '');
         saveOrder(form).then(res=>{
                 if(res.error === 0){
+                    log(res);
                     message.success("保存成功",1,()=>{
-                        this.props.history.push('/index/order');
+                        this.props.history.push(`/index/agent/order/${this.props.location.state.agentId}`)
                     });
                 }else{
                     message.error("保存失败，请检查网络或服务器状态");
@@ -131,7 +144,6 @@ class OrderDetail extends Component {
                 let dataList = [];
                 res.data.map(item => {
                     return dataList.push(<Option key={item.id} text={item.name}>{`${item.name}-${item.phone}`}</Option>);
-
                 });
                 this.setState({
                     agentList: dataList,
@@ -139,8 +151,7 @@ class OrderDetail extends Component {
                 })
             }).catch(err => {
                 log(err);
-            });
-            return;
+            })
         }, 300);
     }
 
@@ -253,9 +264,13 @@ class OrderDetail extends Component {
             <Breadcrumb>
                 <Breadcrumb.Item><a href="#" onClick={(e) => {
                     e.preventDefault();
-                    this.props.history.push('/index/order')
-                }}>订单管理</a></Breadcrumb.Item>
-                <Breadcrumb.Item>订单详情</Breadcrumb.Item>
+                    this.props.history.push('/index/agent')
+                }}>代理商管理</a></Breadcrumb.Item>
+                <Breadcrumb.Item><a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    this.props.history.push(`/index/agent/order/${this.props.location.state.agentId}`)
+                }}>代理商详情</a></Breadcrumb.Item>
+                <Breadcrumb.Item>代理商订单详情</Breadcrumb.Item>
             </Breadcrumb>
             <Form style={{marginTop: 50}}>
                 <FormItem
@@ -263,27 +278,7 @@ class OrderDetail extends Component {
                     labelCol={{span: 2}}
                     wrapperCol={{span: 22}}
                 >
-                    <AutoComplete
-                        placeholder={"输入代理商名称或编号查找代理商"}
-                        value={this.state.orderForm.seller_name}
-                        dataSource={this.state.agentList}
-                        style={{width: 300}}
-                        onSelect={this.selectAgent}
-                        onSearch={this.searchAgent}
-                        onBlur={() => {
-                            this.inputField('orderForm', 'seller_name', this.state.lastSelectName)
-                        }}
-                        onFocus={() => {
-                            this.state.orderForm.seller_name !== '' && this.searchAgent(this.state.orderForm.seller_name)
-                        }}
-                        onChange={value => {
-                            this.inputField('orderForm', 'seller_name', value);
-                            this.setState({lastSelectName: ''}, () => {
-                                this.inputField('orderForm', 'seller_id', '');
-                            })
-                        }}
-                    >
-                    </AutoComplete>
+                   <Input style={{ width: 300 }} readOnly={true} value={this.state.orderForm.seller_name} />
                 </FormItem>
                 <Button style={{ zIndex: 99,position: 'sticky', top: '20%', left: '60%'}} type={"primary"}
                         onClick={this.handleAddProduct}>添加商品</Button>
@@ -417,4 +412,4 @@ class OrderDetail extends Component {
     }
 }
 
-export default OrderDetail;
+export default AgentOrderDetail;

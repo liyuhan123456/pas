@@ -131,3 +131,27 @@ export function deleteOrder(data){
 export function fetchOrderDetail(data){
     return get('/order/info/detail',data);
 }
+//保存订单
+export function saveOrder(data){
+    return post('/order/info/save',data);
+}
+//获取代理商订单
+export function fetchAgentOrder(data){
+    return get('/order/info/list_by_seller',data);
+}
+//获取代理商订单
+export function fetchAgentDetail(data){
+    return get('/seller/info/detail',data);
+}
+//获取提成列表
+export function fetchBonusList(data){
+    return get('/seller/bonus/list',data);
+}
+//修改提成状态
+export function updateBonusStatus(data){
+    return get('/seller/bonus/status',data);
+}
+//获取代理商提成列表
+export function fetchAgentBonusList(data){
+    return get('/seller/bonus/list_by_seller',data);
+}

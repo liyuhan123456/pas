@@ -91,6 +91,25 @@ const OrderDetail = (props) => (
     </Bundle>
 );
 
+const AgentOrder = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "AgentOrder" */'../pages/AgentOrder/index')}>
+        {(AgentOrder) => <AgentOrder {...props} />}
+    </Bundle>
+);
+
+const AgentOrderDetail = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "AgentOrderDetail" */'../pages/AgentOrderDetail/index')}>
+        {(AgentOrderDetail) => <AgentOrderDetail {...props} />}
+    </Bundle>
+);
+
+
+const Bonus = (props) => (
+    <Bundle load={()=> import(/* webpackChunkName: "Bonus" */'../pages/Bonus/index')}>
+        {(Bonus) => <Bonus {...props} />}
+    </Bundle>
+);
+
 
 
 
@@ -110,8 +129,12 @@ const IndexRouterMap = [
     { path: '/index/category', component: Category, exact: true },
     { path: '/index/category/detail', component: CategoryDetail, exact: true },
     { path: '/index/level', component: Level, exact: true },
+    { path: '/index/bonus', component: Bonus, exact: true },
     { path: '/index/system', component: System, exact: true },
     { path: '/index/agent', component: Agent, exact: true },
+    { path: '/index/agent/order/:id', component: AgentOrder, exact: true },
+    { path: '/index/agent/detail/', component: AgentOrderDetail, exact: true },
+    { path: '/index/agent/detail/:id', component: AgentOrderDetail, exact: true },
     { path: '/index/order', component: Order, exact: true },
     { path: '/index/order/detail/', component: OrderDetail, exact: true },
     { path: '/index/order/detail/:id', component: OrderDetail, exact: true },

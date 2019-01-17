@@ -40,7 +40,7 @@ function stringifyURL(params,postFlag){
 export function post(url,data) {
     return new Promise((resolve, reject) => {
         let header =  {'Content-type': 'application/json'};
-        axios.post(url, JSON.stringify(data), {
+        axios.post(url, data, {
                 headers: header
             }
         ).then(res => {

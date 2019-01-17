@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {inject,observer} from "mobx-react";
 import css from './index.css';
 const IconFont = Icon.createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_852492_vjpfcl3hrq9.js',
+    scriptUrl: '//at.alicdn.com/t/font_852492_t5in3291n7f.js',
 });
 const Template = {
     admin: [
@@ -15,6 +15,10 @@ const Template = {
         <Menu.Item key="/order">
             <IconFont className={css['icon-middle']} type="icon-orderform"/>
             <span>订单管理</span>
+        </Menu.Item>,
+        <Menu.Item key="/Bonus">
+            <IconFont className={css['icon-middle']} type="icon-money"/>
+            <span>提成管理</span>
         </Menu.Item>,
         <Menu.Item key="/category">
             <IconFont className={css['icon-middle']} type="icon-category"/>

@@ -1,23 +1,17 @@
 import React, {Component} from 'react'
 import {
     Breadcrumb,
-    Input,
     Button,
     message,
-    Form,
-    Modal,
-    Popconfirm,
     Table,
-    Select,
-    AutoComplete
 } from 'antd';
 import {log} from '../../utils/utils';
 import {
-    fetchOrderList,
-    deleteOrder,
+    fetchBonusList,
+    updateBonusStatus,
 } from '../../service/index';
 
-class Order extends Component {
+class Bonus extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,46 +20,57 @@ class Order extends Component {
             rowTotal: 0,
             list: [],
         };
-        this.orderColumns = [
+        this.bonusColumns = [
             {
-                title: '代理商名称',
+                title: '进货商',
+                dataIndex: 'order_seller_name',
+                align: 'center'
+            },
+            {
+                title: '订单ID',
+                dataIndex: 'order_id',
+                align: 'center',
+            },
+            {
+                title: '订单金额',
+                dataIndex: 'order_amount',
+                align: 'center',
+            },
+            {
+                title: '推荐人',
                 dataIndex: 'seller_name',
                 align: 'center'
             },
             {
-                title: '商品种类数量',
-                dataIndex: 'species',
-                align: 'center',
-            },
-            {
-                title: '商品件数',
-                dataIndex: 'quantity',
+                title: '提成金额',
+                dataIndex: 'amount',
                 align: 'center'
             },
             {
-                title: '总金额',
-                dataIndex: 'amount',
+                title: '订单日期',
+                dataIndex: 'order_date',
+                align: 'center'
+            },
+            {
+                title: '状态',
+                dataIndex: 'status',
                 align: 'center',
-                render: (text)=>{
-                    return (
-                        <span>{text}元</span>
-                    )
+                render: (text)=> {
+                    let str = '';
+                    if(text === 1) str =  '已提取';
+                    if(text === 0) str =  '未提取';
+                    return str
                 }
+
             },
             {
                 title: '操作',
                 align: 'center',
                 render: (text, record) => {
                     return (
-                        <div style={{display: 'flex', justifyContent: 'space-around'}}>
-                            <Button type={"primary"} onClick={() => {
-                                this.props.history.push(`/index/order/detail/${record.id}`)
-                            }}>订单详情</Button>
-                            <Popconfirm title="确定要删除这个订单吗？" onConfirm={() => {
-                                this.handleDeleteOrder(record.id)
-                            }} okText="是" cancelText="否">
-                                <Button type={"danger"}>删除</Button>
-                            </Popconfirm>
+                        <div style={{textAlign: 'center'}}>
+                            { record.status === 1 && <Button onClick={()=>{this.handleUpdateBonusStatus(record.id,0)}} type={"default"}>设为未提取</Button> }
+                            { record.status === 0 && <Button onClick={()=>{this.handleUpdateBonusStatus(record.id,1)}} type={"primary"}>设为提取</Button> }
                         </div>
                     )
                 }
@@ -74,39 +79,38 @@ class Order extends Component {
     }
 
     componentDidMount() {
-        this.handleFetchOrderList();
+        this.handleFetchBonusList();
     }
 
-    handleDeleteOrder(id) {
-        deleteOrder({id}).then(res => {
+    handleUpdateBonusStatus(id,status) {
+        updateBonusStatus({id,status}).then(res => {
             if (res.error === 0) {
-                message.success("删除成功", 1);
-                this.handleFetchOrderList();
+                message.success("修改成功", 1);
+                this.handleFetchBonusList();
             } else {
-                message.error("删除失败,请稍后再试或检查服务器状态!", 1);
+                message.error("修改失败,请稍后再试或检查服务器状态!", 1);
             }
         }).catch(err => {
             log(err);
-            message.error("删除失败,请稍后再试或检查服务器状态!", 1);
+            message.error("修改失败,请稍后再试或检查服务器状态!", 1);
         })
     }
 
-    handleFetchOrderList() {
+    handleFetchBonusList() {
         this.setState({
             isLoading: true
         }, () => {
-            fetchOrderList({
+            fetchBonusList({
                 page_num: this.state.pageNum,
                 page_size: this.state.pageSize
             }).then(res => {
-                log(res);
                 this.setState({
                     list: res.data.list,
                     rowTotal: res.data.totalRow
                 });
             }).catch(err => {
                 log(err);
-                message.error("获取订单列表失败，请检查网络和服务器状态", 1.5)
+                message.error("获取提成列表失败，请检查网络和服务器状态", 1.5)
             }).finally(() => {
                 this.setState({
                     isLoading: false
@@ -118,20 +122,17 @@ class Order extends Component {
     render() {
         return <div className="block">
             <Breadcrumb>
-                <Breadcrumb.Item>订单管理</Breadcrumb.Item>
+                <Breadcrumb.Item>提成管理</Breadcrumb.Item>
             </Breadcrumb>
             <div style={{marginTop: 20}}>
-                <Button onClick={() => {
-                    this.props.history.push('/index/order/detail/')
-                }} style={{marginLeft: 30}} type={"primary"}>新增订单</Button>
                 <Table rowKey={'id'} style={{margin: 30}} loading={this.state.isLoading}
-                       dataSource={this.state.list} columns={this.orderColumns}
+                       dataSource={this.state.list} columns={this.bonusColumns}
                        pagination={{
                            current: this.state.pageNum, onChange: (page) => {
                                this.setState({
                                    pageNum: page
                                }, () => {
-                                   this.handleFetchOrderList();
+                                   this.handleFetchBonusList();
                                })
                            }
                        }}/>
@@ -140,4 +141,4 @@ class Order extends Component {
     }
 }
 
-export default Order;
+export default Bonus;

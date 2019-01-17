@@ -14,7 +14,7 @@ import {inject,observer} from "mobx-react";
 @observer
 class App extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         if(localStorage.getItem('role') === null || localStorage.getItem('userInfo') === null){
              return this.props.history.push('/login')
          }
@@ -35,8 +35,9 @@ class App extends Component {
         return (
             <Row style={{minHeight: '100vh'}} type="flex">
                 <Col span={4} >
-                    <div style={{height: 64, backgroundColor: '#1d64bc',color: '#fff'}}>
-                        <div style={{paddingLeft: 10, lineHeight: '64px', fontSize: '18px' }}>进销存管理系统</div>
+                    <div style={{height: 64, backgroundColor: '#78dde9',color: '#fff'}}>
+                        <img src={require('../../assets/robot.jpg')} style={{ width: 64, height: 64,verticalAlign: 'top', marginLeft: 20 }} alt=""/>
+                        <div style={{paddingLeft: 10, lineHeight: '64px', fontSize: '18px',display: 'inline-block',marginLeft: 10 }}>进销存管理系统</div>
                         {/*<span style={{display: 'inline-block', lineHeight: '58px', fontSize: '8px',marginLeft: '6px' }}>客户服务管理后台</span>*/}
                     </div>
                     <Siderbar role={localStorage.getItem('role')} />

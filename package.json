@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.1.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
     "@svgr/webpack": "2.4.1",
     "antd": "latest",
     "axios": "^0.18.0",
@@ -124,8 +126,14 @@
   },
   "babel": {
     "presets": [
-      "react-app",
-      "mobx"
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "entry"
+        }
+      ],
+    "react-app",
+    "mobx"
     ]
   }
 }

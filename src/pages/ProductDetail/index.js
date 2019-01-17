@@ -767,15 +767,20 @@ class ProductDetail extends Component {
                     </Tabs.TabPane>
                     {
                         this.state.productInfo.id && <Tabs.TabPane key={'2'} tab={'价格管理'}>
-                            <Switch checkedChildren="可编辑" unCheckedChildren="不可编辑" checked={this.state.priceEditAble}
-                                    onChange={(value) => {
-                                        this.setState({priceEditAble: value})
-                                    }}/>
                             {
-                                this.state.priceEditAble &&
-                                <Button type={"primary"} style={{marginLeft: 30}} loading={this.state.priceSaveLoading}
-                                        onClick={this.handleSavePriceList}>保存</Button>
+                                this.state.priceList.length !== 0 && <div>
+                                    <Switch checkedChildren="可编辑" unCheckedChildren="不可编辑" checked={this.state.priceEditAble}
+                                            onChange={(value) => {
+                                                this.setState({priceEditAble: value})
+                                            }}/>
+                                    {
+                                        this.state.priceEditAble &&
+                                        <Button type={"primary"} style={{marginLeft: 30}} loading={this.state.priceSaveLoading}
+                                                onClick={this.handleSavePriceList}>保存</Button>
+                                    }
+                                </div>
                             }
+
                             <Button type={"primary"} onClick={() => {
                                 this.setState({addPriceVisible: true})
                             }} style={{float: 'right'}}>新增</Button>

@@ -52,6 +52,16 @@ class Agent extends Component {
         };
         this.agentColumns = [
             {
+                title: '姓名',
+                dataIndex: 'name',
+                align: 'center',
+                render: (text,record)=>{
+                    return (
+                        <a href="#" onClick={(e)=>{e.preventDefault();this.props.history.push(`/index/agent/order/${record.id}`)}}>{text}</a>
+                    )
+                }
+            },
+            {
                 title: '代理商编号',
                 dataIndex: 'series_no',
                 align: 'center'
@@ -65,11 +75,6 @@ class Agent extends Component {
                         return item.id === text
                     })[0].name}</span>
                 }
-            },
-            {
-                title: '姓名',
-                dataIndex: 'name',
-                align: 'center'
             },
             {
                 title: '电话',
